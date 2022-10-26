@@ -1,13 +1,13 @@
+import java.io.*;
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
 public class Operations {
 
     DecimalFormat df = new DecimalFormat("#,##0.00");
+    private String file_credentials = "src/credentials.txt";
 
-    public void addBudget() {
+/*    public void addBudget() {
         Scanner sc = new Scanner(System.in);
         System.out.println("ENTER YOUR BUDGET AMOUNT:");
         float amount = sc.nextFloat();
@@ -31,7 +31,7 @@ public class Operations {
 
         }
 		
-		/*double expense;
+		*//*double expense;
 		
 		 double totalExpenses = 0.0;
 		do {
@@ -58,10 +58,10 @@ public class Operations {
 	static double calculateAmountOverBudget(double monthlyBudget,
 	        double totalExpenses) {
 	    return monthlyBudget - totalExpenses;
-	}*/
+	}*//*
 
 
-    }
+    }*/
 
     public void setMonthlyBudget() {
     }
@@ -74,10 +74,36 @@ public class Operations {
     public void markEntry() {
     }
 
-    public void getBudgeteryLogs() {
+    public void getBudgetaryLogs() {
     }
 
     public void changePassword() {
+        try {
+
+            Scanner sc = new Scanner(System.in);
+            System.out.print("ENTER THE OLD PASSWORD - ");
+            String old_password = sc.next();
+            File file = new File(file_credentials);
+            Scanner reader = new Scanner(file);
+            if (reader.hasNext()) {
+                String[] credentials = reader.nextLine().split(",");
+                if (credentials[1].equals(old_password)) {
+                    System.out.print("ENTER THE NEW PASSWORD - ");
+                    String new_password = sc.next();
+                    FileWriter fileWriter = new FileWriter(file_credentials);
+                    String cred = credentials[0] + "," + new_password;
+                    fileWriter.write(cred);
+                    fileWriter.close();
+                    System.out.println("YOUR PASSWORD HAS BEEN CHANGED SUCCESSFULLY.");
+                } else {
+                    System.out.println("PASSWORD DID NOT MATCH.");
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
 		

@@ -27,10 +27,11 @@ public class Main {
                                 o.markEntry();
                                 break;
                             case 3:
-                                o.getBudgeteryLogs();
+                                o.getBudgetaryLogs();
                                 break;
                             case 4:
                                 o.changePassword();
+                                break;
                             case 5:
                                 System.out.println("THANKS VISIT AGAIN.");
                                 return;
