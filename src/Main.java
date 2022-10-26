@@ -14,7 +14,7 @@ public class Main {
             if (o.login()) {
                 do {
                     System.out.println("1. SET MONTHLY BUDGET");
-                    System.out.println("2. MAKE AN ENTRY");
+                    System.out.println("2. RECORD AN EXPENSE");
                     System.out.println("3. BUDGETARY LOGS");
                     System.out.println("4. CHANGE PASSWORD");
                     System.out.println("5. EXIT");
@@ -24,7 +24,7 @@ public class Main {
                                 o.setMonthlyBudget();
                                 break;
                             case 2:
-                                o.markEntry();
+                                o.recordExpense();
                                 break;
                             case 3:
                                 o.getBudgetaryLogs();
@@ -39,7 +39,7 @@ public class Main {
                                 System.out.println("ERROR : INVALID CHOICE. PLEASE SELECT THE OPTION BETWEEN 1 TO 4.");
                         }
                     } catch (Exception e) {
-                        System.out.println("ERROR : INVALID INPUT.");
+                        System.out.println("ERROR : INVALID INPUT." + e.getMessage());
                         break;
                     }
                 } while (true);
