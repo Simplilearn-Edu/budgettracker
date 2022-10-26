@@ -1,5 +1,7 @@
-import java.io.*;
-import java.text.DecimalFormat;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,10 +11,9 @@ import java.util.stream.Collectors;
 
 public class Operations {
 
-    DecimalFormat df = new DecimalFormat("#,##0.00");
-    private String file_credentials = "src/credentials.txt";
-    private String file_monthly_budget = "src/budget.txt";
-    private String file_expenses = "src/expenses.txt";
+    private final String file_credentials = "src/credentials.txt";
+    private final String file_monthly_budget = "src/budget.txt";
+    private final String file_expenses = "src/expenses.txt";
 
     private Budget getMonthlyBudget() {
         File f = new File(file_monthly_budget);
@@ -32,7 +33,24 @@ public class Operations {
 
 
     public boolean login() {
-        boolean status = true;
+        boolean status = false;
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.print("USERNAME - ");
+            String username = sc.next();
+            System.out.print("PASSWORD - ");
+            String password = sc.next();
+            File file = new File(file_credentials);
+            Scanner reader = new Scanner(file);
+            if (reader.hasNext()) {
+                String[] credentials = reader.nextLine().split(",");
+                if (credentials[0].equals(username) && credentials[1].equals(password)) {
+                    status = true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return status;
     }
 
@@ -87,7 +105,7 @@ public class Operations {
     private List<Expenses> getExpensesList() {
         List<Expenses> expenses = new ArrayList<>();
         File file = new File(file_expenses);
-        Scanner sc = null;
+        Scanner sc;
         try {
             sc = new Scanner(file);
         } catch (FileNotFoundException e) {
@@ -95,8 +113,8 @@ public class Operations {
         }
         while (sc.hasNext()) {
             String[] expense = sc.nextLine().split(",");
-            for (int i = 0; i < expense.length; i++) {
-                String[] content = expense[i].split(":");
+            for (String s : expense) {
+                String[] content = s.split(":");
                 expenses.add(new Expenses(
                         Integer.parseInt(content[0]),
                         content[1],
@@ -129,8 +147,6 @@ public class Operations {
                     System.out.println("PASSWORD DID NOT MATCH.");
                 }
             }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -140,7 +156,7 @@ public class Operations {
         Validator validator = new Validator();
         Scanner sc = new Scanner(System.in);
         Budget b = getMonthlyBudget();
-        String budgetAmount = "";
+        String budgetAmount;
         if (b.getBudget_amount() > 0) {
             System.out.print("MONTHLY BUDGET IS ALREADY SET, DO YOU WANT TO UPDATE IT?(Y : YES | N : NO)");
             char choice = sc.next().charAt(0);
@@ -181,7 +197,7 @@ public class Operations {
         int spending = b.getSpending();
         b.setBudget_amount(amount);
         b.setCurrent_budget(amount - spending);
-        FileWriter fileWriter = null;
+        FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(file_monthly_budget);
             fileWriter.write(b.toString());

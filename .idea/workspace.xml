@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="638d4867-7e44-4c72-add3-02ba7f77d81b" name="Changes" comment="Password Change Module.&#10;Set Monthly Budget.&#10;Record and Expense.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="638d4867-7e44-4c72-add3-02ba7f77d81b" name="Changes" comment="Password Change Module.&#10;Set Monthly Budget.&#10;Record and Expense.&#10;Date Wise Budgetary Logs.">
       <change beforePath="$PROJECT_DIR$/src/Operations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Operations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +75,14 @@
       <option name="project" value="LOCAL" />
       <updated>1666818101067</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Password Change Module.&#10;Set Monthly Budget.&#10;Record and Expense.&#10;Date Wise Budgetary Logs.">
+      <created>1666819676805</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1666819676805</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -93,6 +99,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Password Change Module." />
     <MESSAGE value="Password Change Module.&#10;Set Monthly Budget.&#10;Record and Expense." />
-    <option name="LAST_COMMIT_MESSAGE" value="Password Change Module.&#10;Set Monthly Budget.&#10;Record and Expense." />
+    <MESSAGE value="Password Change Module.&#10;Set Monthly Budget.&#10;Record and Expense.&#10;Date Wise Budgetary Logs." />
+    <option name="LAST_COMMIT_MESSAGE" value="Password Change Module.&#10;Set Monthly Budget.&#10;Record and Expense.&#10;Date Wise Budgetary Logs." />
   </component>
 </project>
