@@ -1,11 +1,17 @@
 import java.io.*;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class Operations {
 
     DecimalFormat df = new DecimalFormat("#,##0.00");
     private String file_credentials = "src/credentials.txt";
+    private String file_monthly_budget = "src/monthly_budget.txt";
 
 /*    public void addBudget() {
         Scanner sc = new Scanner(System.in);
@@ -64,6 +70,67 @@ public class Operations {
     }*/
 
     public void setMonthlyBudget() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("ENTER THE MONTH NUMBER FROM 1 TO 12 FOR SETTING THE BUDGET - ");
+        String month = scanner.next();
+        Validator validator = new Validator();
+        if (validator.isValidNumber(month)) {
+            int month_number = Integer.parseInt(month);
+            if (1 <= month_number && month_number <= 12) {
+                Month m = Month.of(month_number);
+                String month_name = m.toString();
+                System.out.print("ENTER THE BUDGET AMOUNT FOR THE " + month_name + " MONTH - ");
+                String budget = scanner.next();
+                if (validator.isValidNumber(budget)) {
+                    List<Budget> budgetList = getBudgetList();
+                    int avl_budget = budgetList.get(month_number - 1).getBudget_amount();
+                    if (avl_budget > 0) {
+                        System.out.println("BUDGET OF INR." + avl_budget + " IS ALREADY SET FOR THE " + month_name + " MONTH");
+                    } else {
+                        budgetList.set(month_number - 1, new Budget(month_number, Integer.parseInt(budget)));
+                        try {
+                            FileWriter fileWriter = new FileWriter(file_monthly_budget);
+//                            fileWriter.write();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        System.out.println("BUDGET OF INR." + Integer.parseInt(budget) + " FOR " + month_name + " HAS BEEN UPDATED.");
+                    }
+
+                }
+            } else {
+                System.out.println("ERROR : INVALID MONTH NUMBER.");
+            }
+        }
+    }
+
+    private int getMonthWiseBudget(int month_number) {
+        List<Budget> budgetList = getBudgetList();
+        return budgetList.get(month_number - 1).getBudget_amount();
+    }
+
+    private List<Budget> getBudgetList() {
+        List<Budget> budgetList = new ArrayList<>();
+        File file = new File(file_monthly_budget);
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        while (sc.hasNext()) {
+            String[] lines = sc.nextLine().split(",");
+            for (int i = 0; i < lines.length; i++) {
+                String[] content = lines[i].split(":");
+                budgetList.add(new Budget(
+                        Integer.parseInt(content[0]),
+                        Integer.parseInt(content[1]))
+                );
+            }
+        }
+        return budgetList;
+
     }
 
     public boolean login() {
