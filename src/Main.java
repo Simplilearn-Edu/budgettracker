@@ -5,7 +5,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("+----------------------------------+");
-        System.out.println("|  WELCOME TO BUDGET TRACKER APP  |");
+        System.out.println("|  WELCOME TO BUDGET TRACKER APP   |");
         System.out.println("+----------------------------------+");
 
         System.out.println("PLEASE LOGIN TO CONTINUE - ");
