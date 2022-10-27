@@ -288,6 +288,21 @@ public class Operations {
     }
 
     private void getTotalLog() {
+        File file = new File(file_monthly_budget);
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+            String[] budgetData = sc.nextLine().split(",");
+            System.out.println("+---------------------------------+");
+            System.out.printf("%1s %10s %10s %5s\n", '|', "MONTHLY BUDGET :", budgetData[0], "|");
+            System.out.printf("%1s %10s %10s %5s\n", '|', "CURRENT BUDGET :", budgetData[1], "|");
+            System.out.printf("%1s %10s %10s %5s\n", '|', "TOTAL SPENDING :", budgetData[0], "|");
+            System.out.println("+---------------------------------+");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+
     }
 }
 		
