@@ -3,6 +3,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -230,16 +233,58 @@ public class Operations {
 
     private void getDateWiseLog() {
         List<Expenses> e = getExpensesList();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("ENTER THE DATE IN DD-MM-YYYY FORMAT FOR WHICH YOU WANT TO DISPLAY THE BUDGETARY LOGS - ");
+        String budgetDate = sc.next();
+
         List<Expenses> matchingElements = e.stream()
-                .filter(expenses -> "27-10-2022".equals(expenses.getExpense_date()))
+                .filter(expenses -> budgetDate.equals(expenses.getExpense_date()))
                 .collect(Collectors.toList());
-        for (Expenses ex : matchingElements) {
+        /*for (Expenses ex : matchingElements) {
             System.out.println(ex.toString());
+        }*/
+
+        System.out.println("===================================================================================================");
+        System.out.printf("%5s %17s %17s %17s %17s", "ID", "DATE", "CATEGORY", "AMOUNT", "DESCRIPTION");
+        System.out.println();
+        System.out.println("===================================================================================================");
+        for (Expenses ex : matchingElements) {
+            System.out.format("%5s %17s %17s %17s %17s", ex.getExpense_id(), ex.getExpense_date(), ex.getExpense_category(), ex.getExpense_amount(), ex.getExpense_description());
+            System.out.println();
         }
+        System.out.println("===================================================================================================");
     }
 
     private void getMonthWiseLog() {
+        List<Expenses> e = getExpensesList();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("ENTER THE MONTH NUMBER BETWEEN 1 TO 12 FOR WHICH YOU WANT TO DISPLAY THE BUDGETARY LOGS - ");
+        int month = sc.nextInt();
 
+        List<Expenses> matchingElements = e.stream()
+                .filter(expenses -> month == getMonthOfDate(expenses.getExpense_date()))
+                .collect(Collectors.toList());
+        /*for (Expenses ex : matchingElements) {
+            System.out.println(ex.toString());
+        }*/
+        System.out.println("===================================================================================================");
+        System.out.printf("%5s %17s %17s %17s %17s", "ID", "DATE", "CATEGORY", "AMOUNT", "DESCRIPTION");
+        System.out.println();
+        System.out.println("===================================================================================================");
+        for (Expenses ex : matchingElements) {
+            System.out.format("%5s %17s %17s %17s %17s", ex.getExpense_id(), ex.getExpense_date(), ex.getExpense_category(), ex.getExpense_amount(), ex.getExpense_description());
+            System.out.println();
+        }
+        System.out.println("===================================================================================================");
+
+    }
+
+    private int getMonthOfDate(String expense_date) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate currentDate
+                = LocalDate.parse(expense_date, df);
+        int month = currentDate.getMonthValue();
+        return month;
     }
 
     private void getTotalLog() {
