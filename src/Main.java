@@ -10,7 +10,7 @@ public class Main {
 
         System.out.println("PLEASE LOGIN TO CONTINUE - ");
         Operations o = new Operations();
-//        try {
+        try {
             if (o.login()) {
                 do {
                     System.out.println("1. SET MONTHLY BUDGET");
@@ -18,7 +18,7 @@ public class Main {
                     System.out.println("3. BUDGETARY LOGS");
                     System.out.println("4. CHANGE PASSWORD");
                     System.out.println("5. EXIT");
-//                    try {
+                    try {
                         switch (sc.nextInt()) {
                             case 1:
                                 o.setMonthlyBudget();
@@ -38,16 +38,16 @@ public class Main {
                             default:
                                 System.out.println("ERROR : INVALID CHOICE. PLEASE SELECT THE OPTION BETWEEN 1 TO 4.");
                         }
-                    /*} catch (Exception e) {
+                    } catch (Exception e) {
                         System.out.println("ERROR : INVALID INPUT." + e.getMessage());
                         break;
-                    }*/
+                    }
                 } while (true);
             } else {
                 System.out.println("ERROR : LOGIN FAILURE! INVALID CREDENTIALS.");
             }
-//        } catch (Exception e) {
-//            System.out.println("ERROR : " + e.getMessage());
-//        }
+        } catch (Exception e) {
+            System.out.println("ERROR : " + e.getMessage());
+        }
     }
 }
