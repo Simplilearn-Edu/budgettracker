@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.Objects;
 
 public class Expenses {
     private int expense_id;
@@ -53,6 +54,19 @@ public class Expenses {
 
     public void setExpense_date(String expense_date) {
         this.expense_date = expense_date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Expenses expenses = (Expenses) o;
+        return expense_id == expenses.expense_id && expense_amount == expenses.expense_amount && Objects.equals(expense_category, expenses.expense_category) && Objects.equals(expense_description, expenses.expense_description) && expense_date.equals(expenses.expense_date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(expense_id, expense_category, expense_description, expense_amount, expense_date);
     }
 
     @Override

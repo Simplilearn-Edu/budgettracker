@@ -90,12 +90,29 @@ public class Operations {
             b.setSpending(total_spending);
             b.setCurrent_budget(current_budget - amount);
             try {
-                FileWriter fw1 = new FileWriter(file_expenses, true);
-                fw1.write(expenses.toString());
-                fw1.close();
-                FileWriter fw2 = new FileWriter(file_monthly_budget);
-                fw2.write(b.toString());
-                fw2.close();
+                int i = 0;
+                while (i < 3) {
+                    i++;
+                    System.out.print("ENTER YOUR PASSWORD - ");
+                    String password = sc.next();
+                    File file = new File(file_credentials);
+                    Scanner reader = new Scanner(file);
+                    if (reader.hasNext()) {
+                        String[] credentials = reader.nextLine().split(",");
+                        if (credentials[1].equals(password)) {
+                            FileWriter fw1 = new FileWriter(file_expenses, true);
+                            fw1.write(expenses.toString());
+                            fw1.close();
+                            FileWriter fw2 = new FileWriter(file_monthly_budget);
+                            fw2.write(b.toString());
+                            fw2.close();
+                            System.out.println("EXPENSE RECORDED SUCCESSFULLY.");
+                            break;
+                        } else {
+                            System.out.println((i != 3) ? "INCORRECT PASSWORD." : "YOU HAVE REACHED THE MAXIMUM LIMIT OF INCORRECT PASSWORD.");
+                        }
+                    }
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -215,94 +232,106 @@ public class Operations {
         System.out.println("1. DATE-WISE LOG");
         System.out.println("2. MONTH-WISE LOG");
         System.out.println("3. TOTAL BUDGET");
+        System.out.println("4. DELETE BUDGETARY LOG");
         System.out.print("SELECT THE BUDGET LOG YOU WANT TO DISPLAY - ");
         Scanner sc = new Scanner(System.in);
         int choice = sc.nextInt();
         switch (choice) {
             case 1:
-                getDateWiseLog();
+                System.out.println("ENTER THE DATE IN DD-MM-YYYY FORMAT FOR WHICH YOU WANT TO DISPLAY THE BUDGETARY LOGS - ");
+                String budgetDate = sc.next();
+                displayLogs(getDateWiseLog(budgetDate));
                 break;
             case 2:
-                getMonthWiseLog();
+                System.out.println("ENTER THE MONTH NUMBER BETWEEN 1 TO 12 FOR WHICH YOU WANT TO DISPLAY THE BUDGETARY LOGS - ");
+                int month = sc.nextInt();
+                displayLogs(getMonthWiseLog(month));
                 break;
             case 3:
                 getTotalLog();
                 break;
+            case 4:
+                System.out.print("ENTER THE MONTH NUMBER BETWEEN 1 TO 12 FOR DELETING THE LOG - ");
+                int m = sc.nextInt();
+                deleteLog(m, getMonthWiseLog(m));
+                break;
+            default:
+                System.out.println("NOT A VALID CHOICE.");
+                break;
         }
     }
 
-    private void getDateWiseLog() {
-        List<Expenses> e = getExpensesList();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("ENTER THE DATE IN DD-MM-YYYY FORMAT FOR WHICH YOU WANT TO DISPLAY THE BUDGETARY LOGS - ");
-        String budgetDate = sc.next();
+    private void displayLogs(List<Expenses> expensesList) {
+        if (expensesList.size() > 0) {
+            System.out.println("===================================================================================================");
+            System.out.printf("%5s %17s %17s %17s %17s", "ID", "DATE", "CATEGORY", "AMOUNT", "DESCRIPTION");
+            System.out.println();
+            System.out.println("===================================================================================================");
+            for (Expenses ex : expensesList) {
+                System.out.format("%5s %17s %17s %17s %17s", ex.getExpense_id(), ex.getExpense_date(), ex.getExpense_category(), ex.getExpense_amount(), ex.getExpense_description());
+                System.out.println();
+            }
+            System.out.println("===================================================================================================");
+        } else {
+            System.out.println("NO DATA PRESENT AT THIS MOMENT");
+        }
+    }
 
-        List<Expenses> matchingElements = e.stream()
+    private void deleteLog(int m, List<Expenses> monthWiseLog) {
+        List<Expenses> expensesList = getExpensesList();
+        if (monthWiseLog.size() > 0 && expensesList.size() > 0) {
+            expensesList.removeAll(monthWiseLog);
+            try {
+                FileWriter fw = new FileWriter(file_expenses);
+                for (Expenses ex : expensesList) {
+                    fw.write(ex.toString());
+                }
+                fw.close();
+                System.out.println("BUDGETARY LOG FOR MONTH " + Month.of(m) + "(" + m + ") " + "HAS BEEN DELETED SUCCESSFULLY.");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.println("NO DATA PRESENT FOR MONTH - " + Month.of(m));
+        }
+    }
+
+    private List<Expenses> getDateWiseLog(String budgetDate) {
+        List<Expenses> e = getExpensesList();
+        return e.stream()
                 .filter(expenses -> budgetDate.equals(expenses.getExpense_date()))
                 .collect(Collectors.toList());
-        /*for (Expenses ex : matchingElements) {
-            System.out.println(ex.toString());
-        }*/
-
-        System.out.println("===================================================================================================");
-        System.out.printf("%5s %17s %17s %17s %17s", "ID", "DATE", "CATEGORY", "AMOUNT", "DESCRIPTION");
-        System.out.println();
-        System.out.println("===================================================================================================");
-        for (Expenses ex : matchingElements) {
-            System.out.format("%5s %17s %17s %17s %17s", ex.getExpense_id(), ex.getExpense_date(), ex.getExpense_category(), ex.getExpense_amount(), ex.getExpense_description());
-            System.out.println();
-        }
-        System.out.println("===================================================================================================");
     }
 
-    private void getMonthWiseLog() {
+    private List<Expenses> getMonthWiseLog(int month) {
         List<Expenses> e = getExpensesList();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("ENTER THE MONTH NUMBER BETWEEN 1 TO 12 FOR WHICH YOU WANT TO DISPLAY THE BUDGETARY LOGS - ");
-        int month = sc.nextInt();
 
-        List<Expenses> matchingElements = e.stream()
+        return e.stream()
                 .filter(expenses -> month == getMonthOfDate(expenses.getExpense_date()))
                 .collect(Collectors.toList());
-        /*for (Expenses ex : matchingElements) {
-            System.out.println(ex.toString());
-        }*/
-        System.out.println("===================================================================================================");
-        System.out.printf("%5s %17s %17s %17s %17s", "ID", "DATE", "CATEGORY", "AMOUNT", "DESCRIPTION");
-        System.out.println();
-        System.out.println("===================================================================================================");
-        for (Expenses ex : matchingElements) {
-            System.out.format("%5s %17s %17s %17s %17s", ex.getExpense_id(), ex.getExpense_date(), ex.getExpense_category(), ex.getExpense_amount(), ex.getExpense_description());
-            System.out.println();
-        }
-        System.out.println("===================================================================================================");
-
     }
 
     private int getMonthOfDate(String expense_date) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate currentDate
                 = LocalDate.parse(expense_date, df);
-        int month = currentDate.getMonthValue();
-        return month;
+        return currentDate.getMonthValue();
     }
 
     private void getTotalLog() {
         File file = new File(file_monthly_budget);
-        Scanner sc = null;
+        Scanner sc;
         try {
             sc = new Scanner(file);
             String[] budgetData = sc.nextLine().split(",");
             System.out.println("+---------------------------------+");
             System.out.printf("%1s %10s %10s %5s\n", '|', "MONTHLY BUDGET :", budgetData[0], "|");
             System.out.printf("%1s %10s %10s %5s\n", '|', "CURRENT BUDGET :", budgetData[1], "|");
-            System.out.printf("%1s %10s %10s %5s\n", '|', "TOTAL SPENDING :", budgetData[0], "|");
+            System.out.printf("%1s %10s %10s %5s\n", '|', "TOTAL SPENDING :", budgetData[2], "|");
             System.out.println("+---------------------------------+");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }
 		
