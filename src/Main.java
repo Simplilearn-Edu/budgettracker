@@ -13,8 +13,8 @@ public class Main {
 
         try {
             if (o.login()) {
-                o.isNewMonthOrYear();
                 do {
+                    o.isNewMonthOrYear();
                     System.out.println("1. SET MONTHLY BUDGET");
                     System.out.println("2. RECORD AN EXPENSE");
                     System.out.println("3. BUDGETARY LOGS");
