@@ -2,11 +2,21 @@ public class Budget {
     private int budget_amount;
     private int current_budget;
     private int spending;
+    private int budget_month;
+    private int budget_year;
 
     public Budget(int budget_amount, int current_budget, int spending) {
         this.budget_amount = budget_amount;
         this.current_budget = current_budget;
         this.spending = spending;
+    }
+
+    public Budget(int budget_amount, int current_budget, int spending, int budget_month, int budget_year) {
+        this.budget_amount = budget_amount;
+        this.current_budget = current_budget;
+        this.spending = spending;
+        this.budget_month = budget_month;
+        this.budget_year = budget_year;
     }
 
     public Budget() {
@@ -41,6 +51,6 @@ public class Budget {
 
     @Override
     public String toString() {
-        return budget_amount + "," + current_budget + "," + spending;
+        return budget_amount + "," + current_budget + "," + spending + "," + budget_month + "," + budget_year;
     }
 }

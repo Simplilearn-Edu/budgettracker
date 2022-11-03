@@ -10,8 +10,10 @@ public class Main {
 
         System.out.println("PLEASE LOGIN TO CONTINUE - ");
         Operations o = new Operations();
+
         try {
             if (o.login()) {
+                o.isNewMonthOrYear();
                 do {
                     System.out.println("1. SET MONTHLY BUDGET");
                     System.out.println("2. RECORD AN EXPENSE");

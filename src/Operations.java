@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
@@ -311,11 +312,18 @@ public class Operations {
                 .collect(Collectors.toList());
     }
 
-    private int getMonthOfDate(String expense_date) {
+    private int getMonthOfDate(String date) {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate currentDate
-                = LocalDate.parse(expense_date, df);
+                = LocalDate.parse(date, df);
         return currentDate.getMonthValue();
+    }
+
+    private int getYearOfDate(String date) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate currentDate
+                = LocalDate.parse(date, df);
+        return currentDate.getYear();
     }
 
     private void getTotalLog() {
@@ -333,6 +341,42 @@ public class Operations {
             throw new RuntimeException(e);
         }
     }
+
+    public void isNewMonthOrYear() {
+        Date date = Date.from(Instant.now());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+        int currentMonth = getMonthOfDate(sdf.format(date));
+        int currentYear = getYearOfDate(sdf.format(date));
+        File file = new File(file_monthly_budget);
+        Scanner sc;
+        try {
+            sc = new Scanner(file);
+            String[] budget = sc.nextLine().split(",");
+            int budgetAmount = Integer.parseInt(budget[0]);
+            int budgetMonth = Integer.parseInt(budget[3]);
+            int budgetYear = Integer.parseInt(budget[4]);
+
+            if (budgetMonth < currentMonth || budgetYear < currentYear) {
+                resetBudget(new Budget(budgetAmount, budgetAmount, 0, currentMonth, currentYear));
+                System.out.println("YOUR BUDGET HAS BEEN RESET TO " + budgetAmount + " FOR " + Month.of(currentMonth).toString() + "-" + currentYear + ".");
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void resetBudget(Budget budget) {
+        try {
+            FileWriter fileWriter = new FileWriter(file_monthly_budget);
+            fileWriter.write(budget.toString());
+            fileWriter.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
 		
 		
