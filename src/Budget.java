@@ -49,6 +49,22 @@ public class Budget {
         this.spending = spending;
     }
 
+    public int getBudget_month() {
+        return budget_month;
+    }
+
+    public void setBudget_month(int budget_month) {
+        this.budget_month = budget_month;
+    }
+
+    public int getBudget_year() {
+        return budget_year;
+    }
+
+    public void setBudget_year(int budget_year) {
+        this.budget_year = budget_year;
+    }
+
     @Override
     public String toString() {
         return budget_amount + "," + current_budget + "," + spending + "," + budget_month + "," + budget_year;

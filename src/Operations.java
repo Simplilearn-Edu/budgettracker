@@ -27,7 +27,7 @@ public class Operations {
             sc = new Scanner(f);
             if (sc.hasNext()) {
                 String[] line = sc.nextLine().split(",");
-                b = new Budget(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Integer.parseInt(line[2]));
+                b = new Budget(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Integer.parseInt(line[2]), Integer.parseInt(line[3]), Integer.parseInt(line[4]));
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -218,6 +218,12 @@ public class Operations {
         int spending = b.getSpending();
         b.setBudget_amount(amount);
         b.setCurrent_budget(amount - spending);
+        Date date = Date.from(Instant.now());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        int currentMonth = getMonthOfDate(sdf.format(date));
+        int currentYear = getYearOfDate(sdf.format(date));
+        b.setBudget_month(currentMonth);
+        b.setBudget_year(currentYear);
         FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(file_monthly_budget);
